@@ -3,7 +3,8 @@ New-AzResourceGroup `
 -Name psdemo-rg `
 -Location uksouth
 
-#Retrieve resource group
+#Retrieve a resource group
 $rg = Get-AzResourceGroup `
 -Name psdemo-rg `
 -Location uksouth
+$rg

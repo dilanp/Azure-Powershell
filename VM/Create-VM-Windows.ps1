@@ -1,7 +1,7 @@
 #Retrieve the resource group
 $rg = Get-AzResourceGroup `
--Name psdemo-rg `
--Location uksouth
+    -Name psdemo-rg `
+    -Location uksouth
 
 #Create PSCredential object for the Windows username/password
 $password = ConvertTo-SecureString 'password123412123$%^&*' -AsPlainText -Force
@@ -12,10 +12,10 @@ New-AzVm -Image
 
 #Create the Windows VM
 $vmParams = @{
-    ResourceGroupName = 'psdemo-rg'
+    ResourceGroupName = $rg.ResourceGroupName
     Name = 'psdemo-win-1'
-    Location = 'uksouth'
-    Size = 'Standard_D1'
+    Location = $rg.Location
+    Size = 'Standard_B1ms'
     Image = 'Win2019Datacenter'
     PublicIpAddressName = 'psdemo-win-1-pip-1'
     Credential = $WindowsCred
@@ -30,6 +30,7 @@ New-AzVM @vmParams
 #Find the IP address of the new VM
 Get-AzPublicIpAddress `
     -ResourceGroupName 'psdemo-rg' `
-    -Name 'psdemo-win-1-pip-1' | Select-Object -ExpandProperty IpAddress
+    -Name 'psdemo-win-1-pip-1' | 
+    Select-Object -ExpandProperty IpAddress
 
 #Launch RDP session to new VM...
